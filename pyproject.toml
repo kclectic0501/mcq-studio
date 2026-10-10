@@ -1,0 +1,54 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mcqgen"
+version = "0.1.0"
+description = "Source-grounded PDF quizzes with LangGraph"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["pdf", "mcq", "education", "langgraph", "llm"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Programming Language :: Python :: 3",
+  "Topic :: Education :: Testing",
+]
+requires-python = ">=3.11"
+dependencies = [
+  "pydantic>=2.10,<3", "pydantic-settings>=2.7,<3", "pypdf>=5,<7",
+  "langchain>=1.0,<2", "langgraph>=1.0,<2",
+  "huggingface-hub>=0.34,<2", "langsmith>=0.4,<1",
+  "gradio>=6,<7", "rapidfuzz>=3.10,<4",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10", "ruff>=0.9,<1", "mypy>=1.14,<2"]
+openai = ["langchain-openai>=1,<2"]
+anthropic = ["langchain-anthropic>=1,<2"]
+google = ["langchain-google-genai>=4,<5"]
+ollama = ["langchain-ollama>=1,<2"]
+
+[project.scripts]
+mcqgen = "mcqgen.app:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mcqgen"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.mypy]
+files = ["src/mcqgen"]
+check_untyped_defs = true
+disallow_untyped_defs = true
+ignore_missing_imports = true
